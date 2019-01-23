@@ -142,6 +142,7 @@ typedef struct Time
 }Time;
 
 DWORD WINAPI ShutDownThread(LPVOID lpParam);
+LPDWORD shutDownThreadID = NULL;
 Time localTime;
 
 void CTimedShutdownDlg::OnBnClickedOk()
@@ -150,7 +151,6 @@ void CTimedShutdownDlg::OnBnClickedOk()
 	GetDlgItem(OK)->GetWindowTextW(cmd);
 	cmd.ReleaseBuffer();
 
-	LPDWORD shutDownThreadID = NULL;
 	if (cmd == L"执行")
 	{
 		CString hourString;
@@ -175,6 +175,7 @@ void CTimedShutdownDlg::OnBnClickedOk()
 		localTime.flag = false;
 		GetDlgItem(hour)->EnableWindow(true);
 		GetDlgItem(minute)->EnableWindow(true);
+		ResumeThread(shutDownThreadID);
 		GetDlgItem(OK)->SetWindowTextW(_T("执行"));
 	}
 }
